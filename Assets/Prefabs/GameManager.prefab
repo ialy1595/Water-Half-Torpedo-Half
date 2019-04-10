@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gamemanager: {fileID: 5064230634237293047}
-  isPaused: 0
-  gameTime: 0
+  sm: {fileID: 0}
 --- !u!1001 &3206066132560250950
 PrefabInstance:
   m_ObjectHideFlags: 0
