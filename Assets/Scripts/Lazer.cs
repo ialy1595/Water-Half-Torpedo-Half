@@ -13,5 +13,6 @@ public class Lazer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.rotation = Quaternion.Euler(0f, 0f, GameManager.gm.sm.gameTime * 180f);
     }
 }
