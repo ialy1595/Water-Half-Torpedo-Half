@@ -8,6 +8,13 @@ using System.ComponentModel;
 
 public class GameManager : MonoBehaviour
 {
+    public enum TouchState
+    {
+        None = 0,
+        Left = 1,
+        Right = 2,
+    };
+
     public static GameManager gm;
 
     public GameObject Gamemanager;
@@ -23,6 +30,12 @@ public class GameManager : MonoBehaviour
     private float pauseStartTime;
     private bool pauseStart;
 
+    [HideInInspector] public Handle myHandle;
+    [HideInInspector] public Submarine mySubmarine;
+    
+    private TouchState nowTouchState;
+    private TouchState prevTouchState = 0;
+    
 
     void Awake()
     {
@@ -53,6 +66,7 @@ public class GameManager : MonoBehaviour
         if(isGaming)
         {
             TimeUpdate();
+            CheckTouch();
         }
     }
 
@@ -68,5 +82,37 @@ public class GameManager : MonoBehaviour
         gamePauseTime = 0;
         gameStartTime = Time.time;
         isGaming = true; 
+    }
+
+    TouchState CheckTouchState()
+    {
+        int tmpt = (int)(gameTime / 1.5f);
+        if(tmpt % 3 == 0) return GameManager.TouchState.None;
+        if(tmpt % 3 == 1) return GameManager.TouchState.Left;
+        return TouchState.Right;
+    }
+
+    void CheckTouch()
+    {
+        nowTouchState = CheckTouchState();
+        if(nowTouchState != prevTouchState)
+        {
+            if(nowTouchState == GameManager.TouchState.None)
+            {
+                myHandle.setRotate(Handle.RotateDir.Stop);
+                mySubmarine.setMove(Submarine.MoveDir.Stop);
+            }
+            else if(nowTouchState == GameManager.TouchState.Left)
+            {
+                myHandle.setRotate(Handle.RotateDir.Left);
+                mySubmarine.setMove(Submarine.MoveDir.Left);
+            }
+            else
+            {
+                myHandle.setRotate(Handle.RotateDir.Right);
+                mySubmarine.setMove(Submarine.MoveDir.Right);
+            }
+            prevTouchState = nowTouchState;
+        }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Handle : MonoBehaviour
 {
-    public enum HandleRotateDir
+    public enum RotateDir
     {
         Left = 1,
         Stop = 0,
@@ -13,13 +13,14 @@ public class Handle : MonoBehaviour
 
     private float handleRotateSpeed = 4.2f;
 
-    private int rotateDir = 0;
+    private RotateDir rotateDir = 0;
 
     private float handleAngle = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.gm.myHandle = this;
     }
 
     // Update is called once per frame
@@ -33,7 +34,7 @@ public class Handle : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, handleAngle);
     }
 
-    public void setRotate(int dir)
+    public void setRotate(RotateDir dir)
     {
         rotateDir = dir;
     }
