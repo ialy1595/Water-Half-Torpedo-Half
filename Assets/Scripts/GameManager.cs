@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     private static bool GMCreated = false;
 
     [HideInInspector] public StageManager sm;
+    [HideInInspector] public bool isSm = false;    
     
     void Awake()
     {

@@ -17,6 +17,7 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         GameManager.gm.sm = this;
+        GameManager.gm.isSm = true;
         isPaused = false;
         gameTime = 0;
         gamePauseTime = 0;
