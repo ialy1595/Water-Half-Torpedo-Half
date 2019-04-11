@@ -19,6 +19,7 @@ public class ButtonEvent : MonoBehaviour
 
     public void OnCLickStart()
     {
+        GameManager.gm.InitGame();
         SceneManager.LoadScene("Stage");
     }
 }

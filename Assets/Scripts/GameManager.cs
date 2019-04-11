@@ -14,9 +14,16 @@ public class GameManager : MonoBehaviour
     public static GameObject _Gamemanager;
     private static bool GMCreated = false;
 
-    [HideInInspector] public StageManager sm;
-    [HideInInspector] public bool isSm = false;    
-    
+    [HideInInspector] public bool isGaming = false;
+    [HideInInspector] public bool isPaused;
+
+    [HideInInspector] public float gameTime;
+    private float gameStartTime;
+    private float gamePauseTime;
+    private float pauseStartTime;
+    private bool pauseStart;
+
+
     void Awake()
     {
         if (GMCreated == true)  // GM 중복생성 방지
@@ -43,6 +50,23 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(isGaming)
+        {
+            TimeUpdate();
+        }
+    }
 
+    void TimeUpdate()
+    {
+        gameTime = Time.time - gameStartTime - gamePauseTime;
+    }
+
+    public void InitGame()
+    {
+        isPaused = false;
+        gameTime = 0;
+        gamePauseTime = 0;
+        gameStartTime = Time.time;
+        isGaming = true; 
     }
 }

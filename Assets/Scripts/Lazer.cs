@@ -17,7 +17,7 @@ public class Lazer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lazerAngle = GameManager.gm.sm.gameTime * lazerRotateSpeed;
+        lazerAngle = GameManager.gm.gameTime * lazerRotateSpeed;
 
         if(lazerAngle > 360f) lazerAngle -= 360f;
         if(lazerAngle < -360f) lazerAngle += 360f;

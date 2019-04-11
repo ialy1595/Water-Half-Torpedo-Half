@@ -19,6 +19,6 @@ public class DistanceText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dist.text = "" + (int)(GameManager.gm.sm.gameTime * distPerTime) + "m";
+        dist.text = "" + (int)(GameManager.gm.gameTime * distPerTime) + "m";
     }
 }
