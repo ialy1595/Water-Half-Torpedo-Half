@@ -6,7 +6,7 @@ public class Torpedo : MonoBehaviour
 {
     public static List<Torpedo> TorpedoList = new List<Torpedo>();
     
-    public GameObject DetectObject;
+    public GameObject detectObject;
 
     [HideInInspector] public float torpedoMoveSpeed = 0;
 
@@ -80,6 +80,6 @@ public class Torpedo : MonoBehaviour
 
     void detected()
     {
-
+        Instantiate(detectObject, transform.position, Quaternion.identity);
     }
 }

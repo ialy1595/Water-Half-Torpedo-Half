@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lazer : MonoBehaviour
 {
-    private float lazerRotateSpeed = 180f;
+    private float lazerRotateSpeed = 210f;
 
     private float lazerAngle = 0;
 

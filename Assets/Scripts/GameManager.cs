@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
             return;
         GMCreated = true;
 
-        Random.InitState((int)Time.time);
+        Random.InitState(2);
     }
 
     void Update()
@@ -160,14 +160,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        torpedoCreateCooltime = 1800;
+        torpedoCreateCooltime = 300;
 
         Torpedo instTorp;
         Vector2 pos;
         pos.y = 520;
-        pos.x = Random.Range(-300f, 300f);
+        pos.x = Random.Range(-285f, 285f);
 
         instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
-        instTorp.torpedoMoveSpeed = 1.5f;
+        instTorp.torpedoMoveSpeed = 0.5f;
     }
 }

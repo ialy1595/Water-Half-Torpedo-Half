@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0783200549fdb444a151be9cee369c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DetectObject: {fileID: 2803011526648348655, guid: 77bb190601818e5499532e70ac1fc52b,
+  detectObject: {fileID: 2803011526648348655, guid: 77bb190601818e5499532e70ac1fc52b,
     type: 3}
   torpedoMoveSpeed: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Detected : MonoBehaviour
 {
-    private int life = 60;
+    private int life = 50;
 
     // Start is called before the first frame update
     void Start()
@@ -16,9 +16,6 @@ public class Detected : MonoBehaviour
     void Update()
     {
         life--;
-        if(life < 0)
-        {
-            
-        }
+        if(life < 0) Destroy(gameObject);
     }
 }
