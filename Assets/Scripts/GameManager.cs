@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
             return;
         GMCreated = true;
 
-        Random.InitState(2);
+        Random.InitState((int)System.DateTime.Now.ToBinary());
     }
 
     void Update()
@@ -168,6 +168,6 @@ public class GameManager : MonoBehaviour
         pos.x = Random.Range(-285f, 285f);
 
         instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
-        instTorp.torpedoMoveSpeed = 0.5f;
+        instTorp.torpedoMoveSpeed = Random.Range(0.5f, 3f);
     }
 }
