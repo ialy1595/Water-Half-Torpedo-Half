@@ -11,7 +11,7 @@ public class Submarine : MonoBehaviour
         Right = 1,
     };
 
-    private float submarineMoveSpeed = 4.2f;
+    private float submarineMoveSpeed = 6f;
 
     private MoveDir moveDir = 0;
 

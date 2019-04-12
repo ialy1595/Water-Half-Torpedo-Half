@@ -86,10 +86,37 @@ public class GameManager : MonoBehaviour
 
     TouchState CheckTouchState()
     {
-        int tmpt = (int)(gameTime / 1.5f);
-        if(tmpt % 3 == 0) return GameManager.TouchState.None;
-        if(tmpt % 3 == 1) return GameManager.TouchState.Left;
-        return TouchState.Right;
+        bool isLeft = false;
+        bool isRight = false;        
+
+        int count = Input.touchCount;
+        if(count > 0)
+        {
+            for(int i=0;i<count;i++)
+            {
+                Vector2 pos = Input.GetTouch(i).position;
+                if(pos.y < 400)
+                {
+                    if(pos.x < 0) isLeft = true;
+                    else isRight = true;
+                }
+            }
+        }
+
+        //for engine debug
+        if(Input.GetMouseButton(0))
+        {
+            Vector2 pos = Input.mousePosition;
+            if(pos.y < 1100)
+            {
+                if(pos.x < 360) isLeft = true;
+                else isRight = true;
+            }
+        }
+
+        if(isLeft && (!isRight)) return TouchState.Left;
+        if(isRight && (!isLeft)) return TouchState.Right;
+        return TouchState.None;        
     }
 
     void CheckTouch()
