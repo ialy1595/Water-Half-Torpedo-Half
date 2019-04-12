@@ -8,7 +8,11 @@ public class Torpedo : MonoBehaviour
     
     public GameObject detectObject;
 
-    [HideInInspector] public float torpedoMoveSpeed = 0;
+    [HideInInspector] public static float minSpeed = 0.5f;
+    [HideInInspector] public static float maxSpeed = 3f;
+
+    [HideInInspector] public float torpedoMoveSpeed = 0.5f;
+
 
     private float torpedoY;
 
@@ -80,6 +84,7 @@ public class Torpedo : MonoBehaviour
 
     void detected()
     {
-        Instantiate(detectObject, transform.position, Quaternion.identity);
+        Detected dt = Instantiate(detectObject, transform.position, Quaternion.identity).GetComponent<Detected>();
+        dt.detectedColor = new Color(1f, (maxSpeed - torpedoMoveSpeed) / (maxSpeed - minSpeed), 0f);
     }
 }

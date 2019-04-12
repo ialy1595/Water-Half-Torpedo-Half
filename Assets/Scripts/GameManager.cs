@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        torpedoCreateCooltime = 300;
+        torpedoCreateCooltime = Random.Range(30, 300);
 
         Torpedo instTorp;
         Vector2 pos;
@@ -168,6 +168,6 @@ public class GameManager : MonoBehaviour
         pos.x = Random.Range(-285f, 285f);
 
         instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
-        instTorp.torpedoMoveSpeed = Random.Range(0.5f, 3f);
+        instTorp.torpedoMoveSpeed = Random.Range(Torpedo.minSpeed, Torpedo.maxSpeed);
     }
 }
