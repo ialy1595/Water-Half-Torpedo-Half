@@ -6,7 +6,7 @@ public class Lazer : MonoBehaviour
 {
     private float lazerRotateSpeed = 180f;
 
-    public float lazerAngle = 0;
+    private float lazerAngle = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -23,5 +23,10 @@ public class Lazer : MonoBehaviour
         if(lazerAngle < 0) lazerAngle += 360f;
 
         transform.rotation = Quaternion.Euler(0f, 0f, lazerAngle);
+    }
+
+    public float getAngle()
+    {
+        return lazerAngle;
     }
 }

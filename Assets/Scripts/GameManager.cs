@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public Handle myHandle;
     [HideInInspector] public Submarine mySubmarine;
+
+    public GameObject torp;
     
     private TouchState nowTouchState;
     private TouchState prevTouchState = 0;
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour
         {
             TimeUpdate();
             CheckTouch();
+            CreateTorpedo();
         }
     }
 
@@ -141,5 +144,27 @@ public class GameManager : MonoBehaviour
             }
             prevTouchState = nowTouchState;
         }
+    }
+
+    private int torpedoCreateCooltime = 0;
+    void CreateTorpedo()
+    {
+        if(torpedoCreateCooltime > 0)
+        {
+            torpedoCreateCooltime--;
+            return;
+        }
+
+        torpedoCreateCooltime = 60;
+
+        Torpedo instTorp;
+        Vector2 pos;
+        pos.y = 520;
+        pos.x = Random.Range(-300f, 300f);
+
+        Debug.Log(pos.x);
+
+        instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
+        instTorp.torpedoMoveSpeed = 2f;
     }
 }

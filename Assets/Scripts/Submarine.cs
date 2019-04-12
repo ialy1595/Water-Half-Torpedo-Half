@@ -28,7 +28,7 @@ public class Submarine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         submarineX += (float)moveDir * submarineMoveSpeed;
+        submarineX += (float)moveDir * submarineMoveSpeed;
 
         if(submarineX > edge) submarineX = edge;
         if(submarineX < -edge) submarineX = -edge;
@@ -39,5 +39,10 @@ public class Submarine : MonoBehaviour
     public void setMove(MoveDir dir)
     {
         moveDir = dir;
+    }
+
+    public Vector2 getPos()
+    {
+        return (new Vector2(transform.position.x, transform.position.y));
     }
 }
