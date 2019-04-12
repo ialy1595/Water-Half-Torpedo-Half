@@ -9,7 +9,8 @@ public class DistanceText : MonoBehaviour
     
     private Text dist;
     public float distPerTime = 10;
-    
+    [HideInInspector] public int meter;
+
     void Start()
     {
         dist = GetComponent<Text>();
@@ -19,6 +20,12 @@ public class DistanceText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dist.text = "" + (int)(GameManager.gm.gameTime * distPerTime) + "m";
+        meter = (int)(GameManager.gm.gameTime * distPerTime);
+        string meterString = ""+meter;
+        if(meter < 10000) meterString = "0" + meterString;
+        if(meter < 1000) meterString = "0" + meterString;
+        if(meter < 100) meterString = "0" + meterString;
+        if(meter < 10) meterString = "0" + meterString;
+        dist.text = "" + meterString + "m";
     }
 }
