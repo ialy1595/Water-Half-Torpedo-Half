@@ -5,7 +5,7 @@ using UnityEngine;
 public class Detected : MonoBehaviour
 {
     private int life = 30;
-    private int disappearing = 30;
+    private int disappearing = 50;
 
     [HideInInspector] public Color detectedColor = new Color(1f, 1f, 0f);
     public bool disappearable = true;
