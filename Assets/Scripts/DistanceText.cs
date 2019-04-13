@@ -20,12 +20,20 @@ public class DistanceText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        meter = (int)(GameManager.gm.gameTime * distPerTime);
-        string meterString = ""+meter;
-        if(meter < 10000) meterString = "0" + meterString;
-        if(meter < 1000) meterString = "0" + meterString;
-        if(meter < 100) meterString = "0" + meterString;
-        if(meter < 10) meterString = "0" + meterString;
-        dist.text = "" + meterString + "m";
+        if(GameManager.gm.isGaming)
+        {
+            meter = (int)(GameManager.gm.gameTime * distPerTime);
+            string meterString = ""+meter;
+            if(meter < 10000) meterString = "0" + meterString;
+            if(meter < 1000) meterString = "0" + meterString;
+            if(meter < 100) meterString = "0" + meterString;
+            if(meter < 10) meterString = "0" + meterString;
+            dist.text = "" + meterString + "m";
+            GameManager.gm.meter = meter;
+        }
+        else
+        {
+            dist.text = "BOMB!!";
+        }
     }
 }

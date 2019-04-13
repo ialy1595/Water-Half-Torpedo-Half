@@ -52,6 +52,9 @@ MonoBehaviour:
   mySubmarine: {fileID: 0}
   myLazer: {fileID: 0}
   torp: {fileID: 8912305756361114578, guid: 2caa3af63dec408459bfd151b3b406eb, type: 3}
+  myEndMessageText: {fileID: 1420392873407058329, guid: 4adfbd7c1e0a31f4b96124afb7f89520,
+    type: 3}
+  meter: 0
 --- !u!1001 &3206066132560250950
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -33,11 +33,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Handle myHandle;
     [HideInInspector] public Submarine mySubmarine;
     [HideInInspector] public Lazer myLazer;
-
     public GameObject torp;
     
+    public GameObject myEndMessageText;
+
     private TouchState nowTouchState;
     private TouchState prevTouchState = 0;
+
+    [HideInInspector] public int meter = 0;
     
 
     void Awake()
@@ -92,6 +95,7 @@ public class GameManager : MonoBehaviour
         {
             t.detected(false);
         }
+        Instantiate(myEndMessageText, new Vector3(0f, 300f, -2f), Quaternion.identity);
         Debug.Log("crash!!!");
     }
 
