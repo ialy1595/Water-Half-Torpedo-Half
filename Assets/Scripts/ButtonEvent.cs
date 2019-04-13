@@ -22,4 +22,9 @@ public class ButtonEvent : MonoBehaviour
         GameManager.gm.InitGame();
         SceneManager.LoadScene("Stage");
     }
+
+    public void OnClickOK()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }

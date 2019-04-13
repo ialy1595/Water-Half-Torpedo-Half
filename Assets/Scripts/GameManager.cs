@@ -86,6 +86,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void InitGame()
+    {
+        Torpedo.TorpedoList.Clear();
+        isPaused = false;
+        gameTime = 0;
+        gamePauseTime = 0;
+        gameStartTime = Time.time;
+        meter = 0;
+        isGaming = true; 
+    }
+
     void GameOver()
     {
         isGaming = false;
@@ -102,15 +113,6 @@ public class GameManager : MonoBehaviour
     void TimeUpdate()
     {
         gameTime = Time.time - gameStartTime - gamePauseTime;
-    }
-
-    public void InitGame()
-    {
-        isPaused = false;
-        gameTime = 0;
-        gamePauseTime = 0;
-        gameStartTime = Time.time;
-        isGaming = true; 
     }
 
     TouchState CheckTouchState()

@@ -57,7 +57,6 @@ public class Torpedo : MonoBehaviour
         disappearFlag = true;
         Destroy(gameObject);
     }
-
     public void checkDetect()
     {
         if(disappearFlag) return;
