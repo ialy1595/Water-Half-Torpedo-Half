@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
         {
             t.detected(false);
         }
-        Instantiate(myEndMessageText, new Vector3(0f, 300f, -2f), Quaternion.identity);
+        Instantiate(myEndMessageText, new Vector3(0f, 100f, -2f), Quaternion.identity);
         Debug.Log("crash!!!");
     }
 
@@ -183,12 +183,29 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        torpedoCreateCooltime = Random.Range(30, 300);
+        torpedoCreateCooltime = Random.Range(0, 80);
 
         Torpedo instTorp;
         Vector2 pos;
         pos.y = 520;
-        pos.x = Random.Range(-285f, 285f);
+
+        // for prevent stay
+        // use continuous probability distribution
+
+        bool reverseFlag = false;
+        float p = Random.value;
+        float t = (mySubmarine.getPos().x + 285f) / 570f;
+        if(p > t)
+        {
+            t = 1 - t;
+            p = 1 - p;
+            reverseFlag = true;
+        }
+
+        float x = Mathf.Sqrt(t*p);
+        if(reverseFlag) x = 1 - x;
+
+        pos.x = x * 570f - 285f;
 
         instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
         instTorp.torpedoMoveSpeed = Random.Range(Torpedo.minSpeed, Torpedo.maxSpeed);

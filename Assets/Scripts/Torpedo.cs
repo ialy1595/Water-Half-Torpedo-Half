@@ -8,8 +8,8 @@ public class Torpedo : MonoBehaviour
     
     public GameObject detectObject;
 
-    [HideInInspector] public static float minSpeed = 0.5f;
-    [HideInInspector] public static float maxSpeed = 3f;
+    [HideInInspector] public static float minSpeed = 2.5f;
+    [HideInInspector] public static float maxSpeed = 4f;
 
     [HideInInspector] public float torpedoMoveSpeed = 0.5f;
 
