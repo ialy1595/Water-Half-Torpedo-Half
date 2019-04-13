@@ -72,11 +72,27 @@ public class GameManager : MonoBehaviour
             TimeUpdate();
             CheckTouch();
             CreateTorpedo();
+
+            bool isCrash = false;
             foreach (Torpedo t in Torpedo.TorpedoList)
             {
                 t.checkDetect();
+                isCrash = isCrash || t.checkCrash();
             }
+            if(isCrash) GameOver();
         }
+    }
+
+    void GameOver()
+    {
+        isGaming = false;
+        myHandle.setRotate(Handle.RotateDir.Stop);
+        mySubmarine.setMove(Submarine.MoveDir.Stop);
+        foreach (Torpedo t in Torpedo.TorpedoList)
+        {
+            t.detected(false);
+        }
+        Debug.Log("crash!!!");
     }
 
     void TimeUpdate()
@@ -113,7 +129,7 @@ public class GameManager : MonoBehaviour
         }
 
         //for engine debug
-        /*if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0))
         {
             Vector2 pos = Input.mousePosition;
             if(pos.y < 1100)
@@ -121,7 +137,7 @@ public class GameManager : MonoBehaviour
                 if(pos.x < 360) isLeft = true;
                 else isRight = true;
             }
-        }*/
+        }
 
         if(isLeft && (!isRight)) return TouchState.Left;
         if(isRight && (!isLeft)) return TouchState.Right;

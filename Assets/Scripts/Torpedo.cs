@@ -21,6 +21,8 @@ public class Torpedo : MonoBehaviour
 
     private bool preCCW;
 
+    private float torpedoRadius = 15f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -83,9 +85,27 @@ public class Torpedo : MonoBehaviour
         return (v1.x * v2.y - v1.y * v2.x) > 0;
     }
 
-    void detected()
+    public void detected(bool disappearable = true)
     {
         Detected dt = Instantiate(detectObject, transform.position, Quaternion.identity).GetComponent<Detected>();
-        dt.detectedColor = new Color(1f, (maxSpeed - torpedoMoveSpeed) / (maxSpeed - minSpeed), 0f);
+        if(!disappearable)
+        {
+            dt.detectedColor = new Color(1f, 0f, 0f);
+            dt.disappearable = false;
+        }
+        else
+        {
+            dt.detectedColor = new Color(1f, (maxSpeed - torpedoMoveSpeed) / (maxSpeed - minSpeed), 0f);
+        }
+    }
+
+    public bool checkCrash()
+    {
+        float dist = Mathf.Sqrt(torpedoVector.x * torpedoVector.x + torpedoVector.y * torpedoVector.y);
+        float subMarineRadius = 40f * Mathf.Sqrt(
+                                        (torpedoVector.x * torpedoVector.x + torpedoVector.y * torpedoVector.y) / 
+                                        (4 * torpedoVector.x * torpedoVector.x + torpedoVector.y * torpedoVector.y)
+                                      );
+        return dist <= subMarineRadius + torpedoRadius;
     }
 }

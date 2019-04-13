@@ -38,5 +38,9 @@ public class Detected : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        else
+        {
+            sr.color = detectedColor;
+        }
     }
 }
