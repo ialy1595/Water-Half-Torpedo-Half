@@ -8,7 +8,7 @@ public class Detected : MonoBehaviour
     private int disappearing = 30;
 
     [HideInInspector] public Color detectedColor = new Color(1f, 1f, 0f);
-    public disappearable = true;
+    public bool disappearable = true;
     private SpriteRenderer sr;
 
     // Start is called before the first frame update

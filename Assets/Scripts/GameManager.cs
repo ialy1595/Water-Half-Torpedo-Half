@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         }
 
         Application.targetFrameRate = 60;
+        Screen.SetResolution(720, 1280, true);
         DontDestroyOnLoad(this);    // 씬이 넘어가도 파괴되지 않음
 
         gm = this;
@@ -103,16 +104,16 @@ public class GameManager : MonoBehaviour
             for(int i=0;i<count;i++)
             {
                 Vector2 pos = Input.GetTouch(i).position;
-                if(pos.y < 400)
+                if(pos.y < 1100)
                 {
-                    if(pos.x < 0) isLeft = true;
+                    if(pos.x < 360) isLeft = true;
                     else isRight = true;
                 }
             }
         }
 
         //for engine debug
-        if(Input.GetMouseButton(0))
+        /*if(Input.GetMouseButton(0))
         {
             Vector2 pos = Input.mousePosition;
             if(pos.y < 1100)
@@ -120,7 +121,7 @@ public class GameManager : MonoBehaviour
                 if(pos.x < 360) isLeft = true;
                 else isRight = true;
             }
-        }
+        }*/
 
         if(isLeft && (!isRight)) return TouchState.Left;
         if(isRight && (!isLeft)) return TouchState.Right;

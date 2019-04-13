@@ -13,6 +13,7 @@ public class Torpedo : MonoBehaviour
 
     [HideInInspector] public float torpedoMoveSpeed = 0.5f;
 
+    private Vector2 torpedoVector;
 
     private float torpedoY;
 
@@ -31,7 +32,7 @@ public class Torpedo : MonoBehaviour
         Vector2 lazerVector = new Vector2(Mathf.Cos(lazerAngle * Mathf.Deg2Rad), Mathf.Sin(lazerAngle * Mathf.Deg2Rad));
         
         Vector2 submarinePos = GameManager.gm.mySubmarine.getPos();
-        Vector2 torpedoVector = new Vector2(transform.position.x - submarinePos.x, transform.position.y - submarinePos.y);
+        torpedoVector = new Vector2(transform.position.x - submarinePos.x, transform.position.y - submarinePos.y);
 
         preCCW = CCW(lazerVector, torpedoVector);
     }
@@ -43,6 +44,9 @@ public class Torpedo : MonoBehaviour
         torpedoY -= torpedoMoveSpeed;
         transform.position = (new Vector3(transform.position.x, torpedoY, transform.position.z));
         if(torpedoY < -480f) disappear();
+
+        Vector2 submarinePos = GameManager.gm.mySubmarine.getPos();
+        torpedoVector = new Vector2(transform.position.x - submarinePos.x, transform.position.y - submarinePos.y);
     }
 
     void disappear()
@@ -59,9 +63,6 @@ public class Torpedo : MonoBehaviour
         float lazerAngle = GameManager.gm.myLazer.getAngle();
         Vector2 lazerVector = new Vector2(Mathf.Cos(lazerAngle * Mathf.Deg2Rad), Mathf.Sin(lazerAngle * Mathf.Deg2Rad));
         
-        Vector2 submarinePos = GameManager.gm.mySubmarine.getPos();
-        Vector2 torpedoVector = new Vector2(transform.position.x - submarinePos.x, transform.position.y - submarinePos.y);
-
         bool nowCCW = CCW(lazerVector, torpedoVector);
 
         if((preCCW != nowCCW) && isSameDir(lazerVector, torpedoVector)) detected();
