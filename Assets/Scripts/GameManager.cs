@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
             t.detected(false);
         }
         Instantiate(myEndMessageText, new Vector3(0f, 100f, -2f), Quaternion.identity);
-        Debug.Log("crash!!!");
     }
 
     void TimeUpdate()
@@ -192,22 +191,101 @@ public class GameManager : MonoBehaviour
         // for prevent stay
         // use continuous probability distribution
 
-        bool reverseFlag = false;
-        float p = Random.value;
-        float t = (mySubmarine.getPos().x + 285f) / 570f;
-        if(p > t)
-        {
-            t = 1 - t;
-            p = 1 - p;
-            reverseFlag = true;
+        float posx;
+        float sp;
+
+        while(true)
+        {        
+            bool reverseFlag = false;
+            float p = Random.value;
+            float t = (mySubmarine.getPos().x + 285f) / 570f;
+            if(p > t)
+            {
+                t = 1 - t;
+                p = 1 - p;
+                reverseFlag = true;
+            }
+
+            float x = Mathf.Sqrt(t*p);
+            if(reverseFlag) x = 1 - x;
+
+            posx = x * 570f - 285f;
+
+            sp = Random.Range(Torpedo.minSpeed, Torpedo.maxSpeed);
+
+            if(CheckClearable(posx, sp)) break;
         }
 
-        float x = Mathf.Sqrt(t*p);
-        if(reverseFlag) x = 1 - x;
-
-        pos.x = x * 570f - 285f;
+        pos.x = posx;
 
         instTorp = Instantiate(torp, pos, Quaternion.identity).GetComponent<Torpedo>();
-        instTorp.torpedoMoveSpeed = Random.Range(Torpedo.minSpeed, Torpedo.maxSpeed);
+        instTorp.torpedoMoveSpeed = sp;
+    }
+
+    bool CheckClearable(float x, float sp)
+    {
+        Vector2 sPos = mySubmarine.getPos();
+        Vector2 tPos;
+        int i, j;
+        int tx, ty;
+        int sx = (int)Mathf.Floor((sPos.x + 300f) / (600f / 5f));
+        int[,] tMap = new int[10, 20];
+        
+        for(i=0;i<10;i++) for(j=0;j<20;j++) tMap[i,j] = 0;
+        
+        foreach (Torpedo t in Torpedo.TorpedoList)
+        {
+            tPos = t.getPos();
+            tx = (int)Mathf.Floor((tPos.x + 300f) / (600f / 5f));
+            ty = (int)Mathf.Floor((tPos.y - sPos.y) / (t.torpedoMoveSpeed * 40f));
+            if(ty < 0) ty = 0;
+            if(ty > 9) ty = 9;
+            tMap[tx, ty] = 1;
+        }
+
+        tMap[sx,0] = 2;
+        for(j=1;j<10;j++) for(i=0;i<5;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
+        {
+            if(
+                (i > 0 && tMap[i - 1, j - 1] == 2) ||
+                (tMap[i, j - 1] == 2) ||
+                (i < 4 && tMap[i + 1, j - 1] == 2)
+            )
+            {
+                tMap[i,j] = 2;
+            }
+        }
+
+        bool res = false;
+        
+        for(i=0;i<5;i++) if(tMap[i, 9] == 2) res = true;
+        
+        // already gone
+        if(!res) return true;
+        
+        tx = (int)Mathf.Floor((x + 300f) / (600f / 5f));
+        ty = (int)Mathf.Floor((520 - sPos.y) / (sp * 40f));
+        if(ty < 0) ty = 0;
+        if(ty > 9) ty = 9;
+        tMap[tx, ty] = 1;
+
+        tMap[sx,0] = 3;
+        for(j=1;j<10;j++) for(i=0;i<5;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
+        {
+            if(
+                (i > 0 && tMap[i - 1, j - 1] == 3) ||
+                (tMap[i, j - 1] == 3) ||
+                (i < 4 && tMap[i + 1, j - 1] == 3)
+            )
+            {
+                tMap[i,j] = 3;
+            }
+        }
+
+        res = false;
+        
+        for(i=0;i<5;i++) if(tMap[i, 9] == 3) res = true;
+        
+        return res;
     }
 }

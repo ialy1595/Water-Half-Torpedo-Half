@@ -11,7 +11,7 @@ public class Torpedo : MonoBehaviour
     [HideInInspector] public static float minSpeed = 2.5f;
     [HideInInspector] public static float maxSpeed = 6f;
 
-    [HideInInspector] public float torpedoMoveSpeed = 0.5f;
+    [HideInInspector] public float torpedoMoveSpeed = 2.5f;
 
     private Vector2 torpedoVector;
 
@@ -106,5 +106,10 @@ public class Torpedo : MonoBehaviour
                                         (4 * torpedoVector.x * torpedoVector.x + torpedoVector.y * torpedoVector.y)
                                       );
         return dist <= subMarineRadius + torpedoRadius;
+    }
+
+    public Vector2 getPos()
+    {
+        return (new Vector2(transform.position.x, transform.position.y));
     }
 }
