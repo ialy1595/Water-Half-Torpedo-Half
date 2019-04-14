@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
         Right = 2,
     };
 
+    [HideInInspector] public const float pauseMessageY = 150f;
     private const float screenWidth = 720f;
     private const float screenHeight = 1280f;
     private const float stageWidth = 600f;
@@ -37,6 +38,10 @@ public class GameManager : MonoBehaviour
    
     [HideInInspector] public float gameTime;
     private float gameStartTime;
+    private float pausedTime;
+    private float pauseStartTime;
+    [HideInInspector] public bool isPaused;
+    private bool pauseLasting; 
     
     [HideInInspector] public Handle myHandle;
     [HideInInspector] public Submarine mySubmarine;
@@ -45,6 +50,8 @@ public class GameManager : MonoBehaviour
     
     public GameObject torp;
     public GameObject myEndMessageText;
+    public GameObject myPauseMessage;
+    [HideInInspector] public Object madePauseMessage;
 
     private TouchState nowTouchState;
     private TouchState prevTouchState = 0;
@@ -78,7 +85,6 @@ public class GameManager : MonoBehaviour
         GMCreated = true;
 
         mySoundEffect = transform.Find("SoundEffect").GetComponent<SoundEffect>();
-        mySoundEffect.SetSound(SoundEffect.Audio.Main);
 
         Random.InitState((int)System.DateTime.Now.ToBinary());
     }
@@ -88,16 +94,19 @@ public class GameManager : MonoBehaviour
         if(isGaming)
         {
             TimeUpdate();
-            CheckTouch();
-            CreateTorpedo();
-
-            bool isCrash = false;
-            foreach (Torpedo t in Torpedo.TorpedoList)
+            if(!isPaused)
             {
-                t.CheckDetect();
-                isCrash = isCrash || t.CheckCrash();
+                CheckTouch();
+                CreateTorpedo();
+
+                bool isCrash = false;
+                foreach (Torpedo t in Torpedo.TorpedoList)
+                {
+                    t.CheckDetect();
+                    isCrash = isCrash || t.CheckCrash();
+                }
+                if(isCrash) GameOver();
             }
-            if(isCrash) GameOver();
         }
     }
 
@@ -105,6 +114,9 @@ public class GameManager : MonoBehaviour
     {
         Torpedo.TorpedoList.Clear();
         gameTime = 0;
+        isPaused = false;
+        pausedTime = 0f;
+        pauseLasting = false;
         gameStartTime = Time.time;
         meter = 0;
         isGaming = true; 
@@ -124,7 +136,23 @@ public class GameManager : MonoBehaviour
 
     void TimeUpdate()
     {
-        gameTime = Time.time - gameStartTime;
+        if (isPaused)
+        {
+            if (!pauseLasting)
+            {
+                pauseLasting = true;
+                pauseStartTime = Time.time;
+            }
+        }
+        else
+        {
+            if (pauseLasting)
+            {
+                pauseLasting = false;
+                pausedTime += Time.time - pauseStartTime;
+            }
+            gameTime = Time.time - pausedTime - gameStartTime;
+        }
     }
 
     TouchState CheckTouchState()

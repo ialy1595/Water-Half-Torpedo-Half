@@ -664,6 +664,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5064230634237293041, guid: 0860f1f701209ba488affbc79b91e262,
+        type: 3}
+      propertyPath: myPauseMessage
+      value: 
+      objectReference: {fileID: 6303488490124373327, guid: 7212ae27e33dba048b93c724ae65ed13,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0860f1f701209ba488affbc79b91e262, type: 3}
 --- !u!1 &5064230634967486237 stripped

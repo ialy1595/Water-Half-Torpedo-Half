@@ -44,6 +44,7 @@ public class Torpedo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.isPaused) return;
         if(disappearFlag) return;
         torpedoY -= torpedoMoveSpeed;
         transform.position = (new Vector3(transform.position.x, torpedoY, transform.position.z));

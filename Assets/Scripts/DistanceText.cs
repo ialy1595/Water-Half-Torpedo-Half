@@ -21,6 +21,7 @@ public class DistanceText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.isPaused) return;
         if(GameManager.gm.isGaming)
         {
             meter = (int)(GameManager.gm.gameTime * distPerTime);

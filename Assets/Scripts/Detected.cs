@@ -22,6 +22,7 @@ public class Detected : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.isPaused) return;
         if(disappearable)
         {
             if(life >= 0)

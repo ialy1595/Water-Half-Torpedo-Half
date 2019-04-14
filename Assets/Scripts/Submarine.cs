@@ -30,6 +30,7 @@ public class Submarine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.isPaused) return;
         submarineX += (float)moveDir * submarineMoveSpeed;
 
         if(submarineX > edge) submarineX = edge;

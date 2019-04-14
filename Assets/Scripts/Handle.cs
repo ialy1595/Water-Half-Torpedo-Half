@@ -26,6 +26,7 @@ public class Handle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.gm.isPaused) return;
         handleAngle += (float)rotateDir * handleRotateSpeed;
 
         if(handleAngle > 360f) handleAngle -= 360f;
