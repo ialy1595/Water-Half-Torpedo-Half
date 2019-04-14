@@ -47,7 +47,7 @@ public class Torpedo : MonoBehaviour
         if(disappearFlag) return;
         torpedoY -= torpedoMoveSpeed;
         transform.position = (new Vector3(transform.position.x, torpedoY, transform.position.z));
-        if(torpedoY < -disappearY) Disappear();
+        if(torpedoY < disappearY) Disappear();
 
         Vector2 submarinePos = GameManager.gm.mySubmarine.getPos();
         torpedoVector = new Vector2(transform.position.x - submarinePos.x, transform.position.y - submarinePos.y);

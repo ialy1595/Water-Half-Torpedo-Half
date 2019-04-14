@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Handle myHandle;
     [HideInInspector] public Submarine mySubmarine;
     [HideInInspector] public Lazer myLazer;
+    [HideInInspector] public SoundEffect mySoundEffect;
     
     public GameObject torp;
     public GameObject myEndMessageText;
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public int meter = 0;
 
     private int torpedoCreateCooltime = 100;
+
 
 
     void Awake()
@@ -74,6 +76,9 @@ public class GameManager : MonoBehaviour
         if (GMCreated == true)  // GM 중복생성 방지
             return;
         GMCreated = true;
+
+        mySoundEffect = transform.Find("SoundEffect").GetComponent<SoundEffect>();
+        mySoundEffect.SetSound(SoundEffect.Audio.Main);
 
         Random.InitState((int)System.DateTime.Now.ToBinary());
     }
