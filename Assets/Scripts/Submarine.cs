@@ -11,14 +11,16 @@ public class Submarine : MonoBehaviour
         Right = 1,
     };
 
-    private float submarineMoveSpeed = 6f;
+    [HideInInspector] public const float shortRadius = 40f;
+    
+    [HideInInspector] public const float submarineMoveSpeed = 6f;
+    private const float edge = 260f;  
 
     private MoveDir moveDir = 0;
 
     private float submarineX = 0;
 
-    private float edge = 260f;  
-
+    
     // Start is called before the first frame update
     void Start()
     {

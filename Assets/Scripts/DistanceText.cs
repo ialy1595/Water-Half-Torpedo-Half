@@ -7,8 +7,9 @@ public class DistanceText : MonoBehaviour
 {
     // Start is called before the first frame update
     
+    public const float distPerTime = 10;
+    
     private Text dist;
-    public float distPerTime = 10;
     [HideInInspector] public int meter;
 
     void Start()

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class EndMessageText : MonoBehaviour
 {
     // Start is called before the first frame update
+    public const float posY = 100f;
     private Text endText;
 
     void Start()

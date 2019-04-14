@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Detected : MonoBehaviour
 {
-    private int life = 30;
-    private int disappearing = 50;
+    private const int maxLife = 30;
+    private const int maxDisappearing = 50;
+    private int life = maxLife;
+    private int disappearing = maxDisappearing;
 
     [HideInInspector] public Color detectedColor = new Color(1f, 1f, 0f);
     public bool disappearable = true;
@@ -31,7 +33,7 @@ public class Detected : MonoBehaviour
             {
                 disappearing--;
                 Color tc = sr.color;
-                sr.color = new Color(tc.r, tc.g, tc.b, (float)disappearing / 60f);
+                sr.color = new Color(tc.r, tc.g, tc.b, (float)disappearing / maxDisappearing);
             }
             else
             {

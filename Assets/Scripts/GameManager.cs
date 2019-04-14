@@ -15,6 +15,18 @@ public class GameManager : MonoBehaviour
         Right = 2,
     };
 
+    private const float screenWidth = 720f;
+    private const float screenHeight = 1280f;
+    private const float stageWidth = 600f;
+    private const float stageHeight = 900f;
+    private const float moveTouchHeight = 1100f;
+    private const int clearableMapWidth = 5;
+    private const int clearableMapHeight = (int)(stageHeight / (
+                                                    (Torpedo.minSpeed * stageWidth * 2f) / 
+                                                    (clearableMapWidth * Submarine.submarineMoveSpeed)
+                                                ));
+    
+
     public static GameManager gm;
 
     public GameObject Gamemanager;
@@ -22,26 +34,24 @@ public class GameManager : MonoBehaviour
     private static bool GMCreated = false;
 
     [HideInInspector] public bool isGaming = false;
-    [HideInInspector] public bool isPaused;
-
+   
     [HideInInspector] public float gameTime;
     private float gameStartTime;
-    private float gamePauseTime;
-    private float pauseStartTime;
-    private bool pauseStart;
-
+    
     [HideInInspector] public Handle myHandle;
     [HideInInspector] public Submarine mySubmarine;
     [HideInInspector] public Lazer myLazer;
-    public GameObject torp;
     
+    public GameObject torp;
     public GameObject myEndMessageText;
 
     private TouchState nowTouchState;
     private TouchState prevTouchState = 0;
 
     [HideInInspector] public int meter = 0;
-    
+
+    private int torpedoCreateCooltime = 100;
+
 
     void Awake()
     {
@@ -52,7 +62,7 @@ public class GameManager : MonoBehaviour
         }
 
         Application.targetFrameRate = 60;
-        Screen.SetResolution(720, 1280, true);
+        Screen.SetResolution((int)screenWidth, (int)screenHeight, true);
         DontDestroyOnLoad(this);    // 씬이 넘어가도 파괴되지 않음
 
         gm = this;
@@ -79,8 +89,8 @@ public class GameManager : MonoBehaviour
             bool isCrash = false;
             foreach (Torpedo t in Torpedo.TorpedoList)
             {
-                t.checkDetect();
-                isCrash = isCrash || t.checkCrash();
+                t.CheckDetect();
+                isCrash = isCrash || t.CheckCrash();
             }
             if(isCrash) GameOver();
         }
@@ -89,9 +99,7 @@ public class GameManager : MonoBehaviour
     public void InitGame()
     {
         Torpedo.TorpedoList.Clear();
-        isPaused = false;
         gameTime = 0;
-        gamePauseTime = 0;
         gameStartTime = Time.time;
         meter = 0;
         isGaming = true; 
@@ -104,14 +112,14 @@ public class GameManager : MonoBehaviour
         mySubmarine.setMove(Submarine.MoveDir.Stop);
         foreach (Torpedo t in Torpedo.TorpedoList)
         {
-            t.detected(false);
+            t.Detected(false);
         }
-        Instantiate(myEndMessageText, new Vector3(0f, 100f, -2f), Quaternion.identity);
+        Instantiate(myEndMessageText, new Vector3(0f, EndMessageText.posY, -2f), Quaternion.identity);
     }
 
     void TimeUpdate()
     {
-        gameTime = Time.time - gameStartTime - gamePauseTime;
+        gameTime = Time.time - gameStartTime;
     }
 
     TouchState CheckTouchState()
@@ -125,9 +133,9 @@ public class GameManager : MonoBehaviour
             for(int i=0;i<count;i++)
             {
                 Vector2 pos = Input.GetTouch(i).position;
-                if(pos.y < 1100)
+                if(pos.y < moveTouchHeight)
                 {
-                    if(pos.x < 360) isLeft = true;
+                    if(pos.x < screenWidth / 2f) isLeft = true;
                     else isRight = true;
                 }
             }
@@ -137,9 +145,9 @@ public class GameManager : MonoBehaviour
         if(Input.GetMouseButton(0))
         {
             Vector2 pos = Input.mousePosition;
-            if(pos.y < 1100)
+            if(pos.y < moveTouchHeight)
             {
-                if(pos.x < 360) isLeft = true;
+                if(pos.x < screenWidth / 2f) isLeft = true;
                 else isRight = true;
             }
         }
@@ -173,7 +181,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private int torpedoCreateCooltime = 100;
     void CreateTorpedo()
     {
         if(torpedoCreateCooltime > 0)
@@ -186,7 +193,7 @@ public class GameManager : MonoBehaviour
 
         Torpedo instTorp;
         Vector2 pos;
-        pos.y = 520;
+        pos.y = Torpedo.createY;
 
         // for prevent stay
         // use continuous probability distribution
@@ -197,8 +204,9 @@ public class GameManager : MonoBehaviour
         while(true)
         {        
             bool reverseFlag = false;
+            float tropCreateWidth = stageWidth - 2 * Torpedo.torpedoRadius;
             float p = Random.value;
-            float t = (mySubmarine.getPos().x + 285f) / 570f;
+            float t = (mySubmarine.getPos().x + (tropCreateWidth / 2f)) / tropCreateWidth;
             if(p > t)
             {
                 t = 1 - t;
@@ -209,7 +217,7 @@ public class GameManager : MonoBehaviour
             float x = Mathf.Sqrt(t*p);
             if(reverseFlag) x = 1 - x;
 
-            posx = x * 570f - 285f;
+            posx = x * tropCreateWidth - (tropCreateWidth / 2f);
 
             sp = Random.Range(Torpedo.minSpeed, Torpedo.maxSpeed);
 
@@ -222,13 +230,23 @@ public class GameManager : MonoBehaviour
         instTorp.torpedoMoveSpeed = sp;
     }
 
+    int ClearableMapX(float x)
+    {
+        return (int)Mathf.Floor((x + (stageWidth / 2)) / (stageWidth / clearableMapWidth));
+    }
+    int ClearableMapY(float y, float speed)
+    {
+        Vector2 sPos = mySubmarine.getPos();
+        float yf = ((stageWidth * 2f) / (clearableMapWidth * Submarine.submarineMoveSpeed));
+        return (int)Mathf.Floor((y - sPos.y) / (speed * yf));
+    }
     bool CheckClearable(float x, float sp)
     {
         Vector2 sPos = mySubmarine.getPos();
         Vector2 tPos;
         int i, j;
         int tx, ty;
-        int sx = (int)Mathf.Floor((sPos.x + 300f) / (600f / 5f));
+        int sx = ClearableMapX(sPos.x);
         int[,] tMap = new int[10, 20];
         
         for(i=0;i<10;i++) for(j=0;j<20;j++) tMap[i,j] = 0;
@@ -236,20 +254,20 @@ public class GameManager : MonoBehaviour
         foreach (Torpedo t in Torpedo.TorpedoList)
         {
             tPos = t.getPos();
-            tx = (int)Mathf.Floor((tPos.x + 300f) / (600f / 5f));
-            ty = (int)Mathf.Floor((tPos.y - sPos.y) / (t.torpedoMoveSpeed * 40f));
+            tx = ClearableMapX(tPos.x);
+            ty = ClearableMapY(tPos.y, t.torpedoMoveSpeed);
             if(ty < 0) ty = 0;
-            if(ty > 9) ty = 9;
+            if(ty > clearableMapHeight) ty = clearableMapHeight;
             tMap[tx, ty] = 1;
         }
 
         tMap[sx,0] = 2;
-        for(j=1;j<10;j++) for(i=0;i<5;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
+        for(j=1;j<=clearableMapHeight;j++) for(i=0;i<clearableMapWidth;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
         {
             if(
                 (i > 0 && tMap[i - 1, j - 1] == 2) ||
                 (tMap[i, j - 1] == 2) ||
-                (i < 4 && tMap[i + 1, j - 1] == 2)
+                (i < clearableMapWidth - 1 && tMap[i + 1, j - 1] == 2)
             )
             {
                 tMap[i,j] = 2;
@@ -258,24 +276,24 @@ public class GameManager : MonoBehaviour
 
         bool res = false;
         
-        for(i=0;i<5;i++) if(tMap[i, 9] == 2) res = true;
+        for(i=0;i<clearableMapWidth;i++) if(tMap[i, clearableMapHeight] == 2) res = true;
         
         // already gone
         if(!res) return true;
         
-        tx = (int)Mathf.Floor((x + 300f) / (600f / 5f));
-        ty = (int)Mathf.Floor((520 - sPos.y) / (sp * 40f));
+        tx = ClearableMapX(x);
+        ty = ClearableMapY(Torpedo.createY, sp);
         if(ty < 0) ty = 0;
-        if(ty > 9) ty = 9;
+        if(ty > clearableMapHeight) ty = clearableMapHeight;
         tMap[tx, ty] = 1;
 
         tMap[sx,0] = 3;
-        for(j=1;j<10;j++) for(i=0;i<5;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
+        for(j=1;j<=clearableMapHeight;j++) for(i=0;i<clearableMapWidth;i++) if(tMap[i,j] != 1 && tMap[i,j - 1] != 1)
         {
             if(
                 (i > 0 && tMap[i - 1, j - 1] == 3) ||
                 (tMap[i, j - 1] == 3) ||
-                (i < 4 && tMap[i + 1, j - 1] == 3)
+                (i < clearableMapWidth - 1 && tMap[i + 1, j - 1] == 3)
             )
             {
                 tMap[i,j] = 3;
@@ -284,7 +302,7 @@ public class GameManager : MonoBehaviour
 
         res = false;
         
-        for(i=0;i<5;i++) if(tMap[i, 9] == 3) res = true;
+        for(i=0;i<clearableMapWidth;i++) if(tMap[i, clearableMapHeight] == 3) res = true;
         
         return res;
     }

@@ -11,7 +11,7 @@ public class Handle : MonoBehaviour
         Right = -1,
     };
 
-    private float handleRotateSpeed = 4.2f;
+    private const float handleRotateSpeed = 4.2f;
 
     private RotateDir rotateDir = 0;
 
