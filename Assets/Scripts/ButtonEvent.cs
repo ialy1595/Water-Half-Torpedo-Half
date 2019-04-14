@@ -50,4 +50,14 @@ public class ButtonEvent : MonoBehaviour
         GameManager.gm.mySoundEffect.SetSound(SoundEffect.Audio.Main);
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void OnClickHowto()
+    {
+        SceneManager.LoadScene("Howto");
+    }
+    
+    public void OnClickBack()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
