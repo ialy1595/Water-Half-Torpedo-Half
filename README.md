@@ -7,9 +7,13 @@ You must avoid approaching torpedoes. There are many games of this genre. Howeve
 
 ## Screenshots
 
-![](./doc/images/main.jpg) ![](./doc/images/howto.jpg)
+main | howto
+:-------------------------:|:-------------------------:
+![](./doc/images/main.jpg) | ![](./doc/images/howto.jpg)
 
-![](./doc/images/play.jpg) ![](./doc/images/end.jpg)
+playing | game over
+:-------------------------:|:-------------------------:
+![](./doc/images/play.jpg) | ![](./doc/images/end.jpg)
 
 ## License
 
